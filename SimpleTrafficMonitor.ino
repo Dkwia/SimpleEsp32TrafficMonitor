@@ -60,15 +60,21 @@ void loop() {
   }
 
   if (SerialBT.available()) {
-    String line = SerialBT.readStringUntil('\n');
-    int comma = line.indexOf(',');
-    if (comma > 0) {
-      display.clearDisplay();
-      display.setCursor(0, 8);
-      display.printf("Upload  : %s kB/s\n", line.substring(0, comma).c_str());
-      display.printf("Download: %s kB/s\n", line.substring(comma + 1).c_str());
-      display.display();
-    }
+  String line = SerialBT.readStringUntil('\n');
+  int c1 = line.indexOf(',');
+  int c2 = line.indexOf(',', c1 + 1);
+  if (c1 > 0 && c2 > c1) {
+    String up   = line.substring(0, c1);
+    String down = line.substring(c1 + 1, c2);
+    String run  = line.substring(c2 + 1);
+
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.printf("Upl : %s kB/s\n", up.c_str());
+    display.printf("Dwl : %s kB/s\n", down.c_str());
+    display.printf("API : %s s\n",   run.c_str());
+    display.display();
   }
 }
 
+}
