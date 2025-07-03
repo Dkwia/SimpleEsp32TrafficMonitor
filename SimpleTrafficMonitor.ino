@@ -72,7 +72,7 @@ void loop() {
     display.setCursor(0, 0);
     display.printf("Upl : %s kB/s\n", up.c_str());
     display.printf("Dwl : %s kB/s\n", down.c_str());
-    display.printf("API : %s s\n",   run.c_str());
+    display.printf("Rtm : %s s\n",   run.c_str());
     display.display();
   }
 }
