@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	var start = time.Now()
 	portName := flag.String("port", "", "Bluetooth COM port (COM5, /dev/rfcomm0, …)")
 	flag.Parse()
 	if *portName == "" {
@@ -29,6 +30,7 @@ func main() {
 
 	ticker := time.NewTicker(time.Second)
 	for range ticker.C {
+		
 		nowStats, err := net.IOCounters(false)
 		if err != nil || len(nowStats) == 0 {
 			continue
@@ -37,8 +39,9 @@ func main() {
 
 		up   := float64(nowStats[0].BytesSent-prev[0].BytesSent) / 1024 / elapsed
 		down := float64(nowStats[0].BytesRecv-prev[0].BytesRecv) / 1024 / elapsed
-
-		fmt.Fprintf(port, "%.1f,%.1f\n", up, down)
+		runtime := int(time.Since(start).Seconds())
+		
+		fmt.Fprintf(port, "%.1f,%.1f,%d\n", up, down, runtime)
 
 		prev = nowStats
 		prevTime = time.Now()
